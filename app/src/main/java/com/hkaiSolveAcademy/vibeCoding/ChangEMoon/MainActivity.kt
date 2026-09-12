@@ -1,10 +1,11 @@
-package com.hkaiSolveAcademy.vibeCoding.changEMoon
+package com.hkaiSolveAcademy.vibeCoding.ChangEMoon
 
 import android.app.Activity
 import android.os.Bundle
 import android.graphics.*
 import android.view.MotionEvent
 import android.view.View
+import com.google.firebase.analytics.FirebaseAnalytics
 import kotlin.math.*
 import kotlin.random.Random
 
@@ -25,6 +26,7 @@ class MainActivity : Activity() {
 
 /** Pure native Canvas game. Coordinates use a 400 x 800 letterboxed logical stage. */
 class MoonGame(context: android.content.Context) : View(context) {
+    private val analytics = FirebaseAnalytics.getInstance(context.applicationContext)
     private val ink = Paint(Paint.ANTI_ALIAS_FLAG)
     private val gold = Color.rgb(244, 210, 144)
     private val white = Color.rgb(247, 240, 230)
@@ -56,10 +58,23 @@ class MoonGame(context: android.content.Context) : View(context) {
     init { isFocusable = true; contentDescription = "嫦娥射月亮：拖曳瞄準，放手射箭；四十秒內射中五次贏月餅。" }
     fun suspendGame() { if (screen == "play") paused = true; aiming = false; active = false; last = 0 }
     fun resumeFrames() { active = true; last = 0; invalidate() }
-    private fun start() { screen = "play"; paused = false; time = 40f; hits = 0; phase = 0f; cooldown = 0f; arrows.clear(); sparks.clear(); last = 0; aiming = false }
+    private fun start() {
+        screen = "play"; paused = false; time = 40f; hits = 0; phase = 0f; cooldown = 0f; arrows.clear(); sparks.clear(); last = 0; aiming = false
+        analytics.logEvent("level_start", Bundle().apply { putString("level_name", level.toString()) })
+    }
     private fun finish(won: Boolean) {
+        if (screen != "play") return
+        analytics.logEvent("level_end", Bundle().apply {
+            putString("level_name", level.toString())
+            putLong("success", if (won) 1L else 0L)
+            putLong("score", hits.toLong())
+        })
         screen = if (won) "win" else "lose"; aiming = false
         if (won) { cakes++; level++; prefs.edit().putInt("cakes", cakes).putInt("level", level).apply() }
+        if (won) analytics.logEvent("earn_virtual_currency", Bundle().apply {
+            putString("virtual_currency_name", "mooncake")
+            putDouble("value", 1.0)
+        })
         arrows.clear()
     }
     private fun update(dt: Float) {

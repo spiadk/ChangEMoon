@@ -1,6 +1,6 @@
 # 嫦娥射月亮 🌕
 
-Kotlin 原生 Android Canvas 小遊戲，無 WebView、無廣告、無網絡權限。
+Kotlin 原生 Android Canvas 小遊戲，無 WebView、無廣告；遊戲可離線玩，Firebase Analytics 會在有網絡時傳送使用事件。
 
 ## 用 Android Studio 開啟
 
@@ -24,8 +24,31 @@ Kotlin 原生 Android Canvas 小遊戲，無 WebView、無廣告、無網絡權�
 
 ## 實作及驗證
 
-`app/src/main/java/com/hkaiSolveAcademy/vibeCoding/changEMoon/MainActivity.kt` 包含原生 Activity、Canvas 繪圖、遊戲循環、觸控、移動目標碰撞與存檔。所有圖案由程式繪製，無外部素材依賴。
+`app/src/main/java/com/hkaiSolveAcademy/vibeCoding/ChangEMoon/MainActivity.kt` 包含原生 Activity、Canvas 繪圖、遊戲循環、觸控、移動目標碰撞與存檔。所有圖案由程式繪製，無外部素材依賴。
 
 已用本機 Kotlin 編譯器及快取 Android API JAR 檢查 Kotlin 原始碼。環境無法讀取已安裝 Android SDK，因此未完成完整 Gradle APK 建置或模擬器實測；請在 Android Studio 同步並 Run。沒有附上未驗證的 APK。
 
 建議實機驗收：首次開始 → 射中五次 → 月餅增加 → 下一關 → 暫停 / 回到 App → 失敗重試 → 重啟確認收藏保留。
+
+## Firebase Analytics
+
+App ID / namespace / Kotlin package：`com.hkaiSolveAcademy.vibeCoding.ChangEMoon`（大小寫必須一致）。
+
+已加入 `app/google-services.json`，連接 Firebase 專案 `spiadk-f15ca`，及 Google services plugin / Firebase Analytics SDK。
+事件：`level_start`（開始關卡）、`level_end`（關卡及成功與否、命中數）、`earn_virtual_currency`（每次勝利獲得 1 個 mooncake）。SDK 亦會收集預設使用事件。
+
+Firebase Console → Project settings → Integrations → Google Analytics：確認連結到你想使用的 Analytics 資源。本機設定不能證明數字 ID `553862037` 的後台連結狀態。
+
+驗證：Gradle Sync 後 Run，在連接裝置執行：
+
+```text
+adb shell setprop debug.firebase.analytics.app com.hkaiSolveAcademy.vibeCoding.ChangEMoon
+```
+
+重新開啟遊戲、開始並完成關卡，在 Firebase Analytics DebugView 檢查上述事件。完成後關閉 debug：
+
+```text
+adb shell setprop debug.firebase.analytics.app .none.
+```
+
+這次修改尚未完成 APK 建置及 Firebase DebugView 端到端驗證。更改 application ID 後會被 Android 視作另一個 App，舊 App 收藏不會自動遷移。
