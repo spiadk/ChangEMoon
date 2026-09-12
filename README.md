@@ -9,7 +9,7 @@ Kotlin 原生 Android Canvas 小遊戲，無 WebView、無廣告；遊戲可離�
 3. 讓 Gradle Sync 完成；按提示安裝 Android SDK Platform 35 / Build Tools。首次同步需要網絡下載依賴。
 4. 選擇 Android 6.0 / API 23 或以上模擬器或實機，按 **Run ▶**。
 
-專案使用 Android Gradle Plugin 8.9.2、Gradle Wrapper 8.11.1、Kotlin 2.1.20。AGP 配對要求見 [Android 官方文件](https://developer.android.com/build/releases/agp-8-9-0-release-notes)。
+專案使用 Android Gradle Plugin 9.4.0、Gradle Wrapper 9.7.1、Kotlin 2.2.10。AGP 配對要求見 [Android 官方文件](https://developer.android.com/build/releases/agp-8-9-0-release-notes)。
 
 命令列：Windows 用 `gradlew.bat assembleDebug`；macOS / Linux 用 `sh gradlew assembleDebug`。
 
@@ -32,7 +32,7 @@ Kotlin 原生 Android Canvas 小遊戲，無 WebView、無廣告；遊戲可離�
 
 ## Firebase Analytics
 
-App ID / namespace / Kotlin package：`com.hkaiSolveAcademy.vibeCoding.ChangEMoon`（大小寫必須一致）。
+Application ID：`com.hkaiSolveAcademy.vibeCoding.changEMoon`，配合現有 Google Play App。Namespace / Kotlin package 保留 `com.hkaiSolveAcademy.vibeCoding.ChangEMoon`。Firebase 已新增細寫 Android App，設定檔已按控制台確認的 Firebase App ID `1:519315450676:android:ca1a27a50faa68afcf1361` 更新，與 application ID 完全一致；沿用同一專案的 API key。
 
 已加入 `app/google-services.json`，連接 Firebase 專案 `spiadk-f15ca`，及 Google services plugin / Firebase Analytics SDK。
 事件：`level_start`（開始關卡）、`level_end`（關卡及成功與否、命中數）、`earn_virtual_currency`（每次勝利獲得 1 個 mooncake）。SDK 亦會收集預設使用事件。
@@ -42,7 +42,7 @@ Firebase Console → Project settings → Integrations → Google Analytics：�
 驗證：Gradle Sync 後 Run，在連接裝置執行：
 
 ```text
-adb shell setprop debug.firebase.analytics.app com.hkaiSolveAcademy.vibeCoding.ChangEMoon
+adb shell setprop debug.firebase.analytics.app com.hkaiSolveAcademy.vibeCoding.changEMoon
 ```
 
 重新開啟遊戲、開始並完成關卡，在 Firebase Analytics DebugView 檢查上述事件。完成後關閉 debug：
@@ -52,3 +52,9 @@ adb shell setprop debug.firebase.analytics.app .none.
 ```
 
 這次修改尚未完成 APK 建置及 Firebase DebugView 端到端驗證。更改 application ID 後會被 Android 視作另一個 App，舊 App 收藏不會自動遷移。
+
+## 最新建置驗證（2026-09-12）
+
+Gradle bundleRelease 成功，包含 release lint 及 Firebase 設定處理；已確認產出 manifest 的 application ID 為 com.hkaiSolveAcademy.vibeCoding.changEMoon，targetSdk 35。先前 SDK 存取限制已不再阻止本次建置。
+
+目前專案未設定 release signingConfig，產生的 AAB 未簽署。上傳 Google Play 前須使用 Android Studio 的 Generate Signed Bundle / APK，選取現有 upload keystore 簽署。不要使用另一把新金鑰取代既有上傳金鑰。Analytics 實際事件接收仍未驗證。

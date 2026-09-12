@@ -4,14 +4,26 @@
     "project_id": "spiadk-f15ca",
     "storage_bucket": "spiadk-f15ca.firebasestorage.app"
   },
-  "client": [{
-    "client_info": {
-      "mobilesdk_app_id": "1:519315450676:android:ef065ef75baf2700cf1361",
-      "android_client_info": { "package_name": "com.hkaiSolveAcademy.vibeCoding.ChangEMoon" }
-    },
-    "oauth_client": [],
-    "api_key": [{ "current_key": "AIzaSyAjsB4-QlKq1ecf_iqpV6_8XiwZzT4T0yE" }],
-    "services": { "appinvite_service": { "other_platform_oauth_client": [] } }
-  }],
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519315450676:android:ca1a27a50faa68afcf1361",
+        "android_client_info": {
+          "package_name": "com.hkaiSolveAcademy.vibeCoding.changEMoon"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjsB4-QlKq1ecf_iqpV6_8XiwZzT4T0yE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
   "configuration_version": "1"
 }
