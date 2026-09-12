@@ -6,7 +6,7 @@ Kotlin 原生 Android Canvas 小遊戲，無 WebView、無廣告；遊戲可離�
 
 1. 解壓 ZIP，選擇 **Open**，開啟 `ChangEMoon` 資料夾（內含 `settings.gradle.kts`）。
 2. Gradle JDK 選用 Android Studio 內置 JDK（17 或以上）。
-3. 讓 Gradle Sync 完成；按提示安裝 Android SDK Platform 35 / Build Tools。首次同步需要網絡下載依賴。
+3. 讓 Gradle Sync 完成；按提示安裝 Android SDK Platform 36 / Build Tools。首次同步需要網絡下載依賴。
 4. 選擇 Android 6.0 / API 23 或以上模擬器或實機，按 **Run ▶**。
 
 專案使用 Android Gradle Plugin 9.4.0、Gradle Wrapper 9.7.1、Kotlin 2.2.10。AGP 配對要求見 [Android 官方文件](https://developer.android.com/build/releases/agp-8-9-0-release-notes)。
@@ -58,3 +58,6 @@ adb shell setprop debug.firebase.analytics.app .none.
 Gradle bundleRelease 成功，包含 release lint 及 Firebase 設定處理；已確認產出 manifest 的 application ID 為 com.hkaiSolveAcademy.vibeCoding.changEMoon，targetSdk 35。先前 SDK 存取限制已不再阻止本次建置。
 
 目前專案未設定 release signingConfig，產生的 AAB 未簽署。上傳 Google Play 前須使用 Android Studio 的 Generate Signed Bundle / APK，選取現有 upload keystore 簽署。不要使用另一把新金鑰取代既有上傳金鑰。Analytics 實際事件接收仍未驗證。
+
+
+API 36 更新：compileSdk / targetSdk 已升至 36，minSdk 維持 23；bundleRelease 及 release lint 通過，產出 manifest 確認 targetSdkVersion=36。尚未完成 API 36 裝置實測。
